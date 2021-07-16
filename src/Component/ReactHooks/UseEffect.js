@@ -12,7 +12,10 @@ export default function UseEffect() {
   const decrementClick =()=>{
     setSalary2(salary2-1);
   };
- useEffect(()=>{console.log(" useEffect Rendering")}, [salary2])
+ useEffect(()=>{
+   console.log(" useEffect Rendering")
+  
+  }, [salary2 ])
   return (
     <div>
     <h1>Employees Details</h1>
