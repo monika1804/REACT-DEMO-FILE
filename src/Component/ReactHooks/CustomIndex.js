@@ -30,6 +30,7 @@ export default function CustomIndex() {
 // }
 
 
+
 // if(e.target.files.size > 10240){
 //   console.log("File Size")
 //   alert ("File size cannot exceed more than 10kb")
