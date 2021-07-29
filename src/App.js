@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import './index.css';
 // import UserGreeting from './Component/UserGreeting'
 // import ListRendering from './Component/ListRendering'
@@ -16,12 +16,28 @@ import FocusInput from './Component/FocusInput';
 import FRParentInput from './Component/FRParentInput';
 import MemoComponent from './Component/Memo';
 import UseState from './Component/ReactHooks/UseState';
+import UseEffect from './Component/ReactHooks/UseEffect';
+import CustomIndex from './Component/ReactHooks/CustomIndex';
+import DataFetchClass from './Component/ReactHooks/DataFetchClass';
+import DataFetchFunction from './Component/ReactHooks/DataFetchFunction';
+import RenderIndex from './Component/ConditionalRendering/RenderIndex';
+import UseEffectAPI from './Component/FetchAPI/UseEffectAPI';
+import Broadcasting from './Project/Broadcasting';
+import ContactList from './Project/ContactList';
 
 export class App extends Component {
   render() {
     return (
       <div className="App">
-    <UseState />
+      <Broadcasting />
+      {/* <ContactList /> */}
+      {/* <UseEffectAPI /> */}
+      {/* <RenderIndex /> */}
+      {/* <DataFetchFunction /> */}
+      {/* <DataFetchClass /> */}
+      {/* <CustomIndex /> */}
+      {/* <UseEffect /> */}
+    {/* <UseState /> */}
       {/* <FRParentInput /> */}
     {/* <FocusInput /> */}
       {/* <RefsDemo /> */}

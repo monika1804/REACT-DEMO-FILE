@@ -2,14 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 // import Card from './Card';
-
+import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // import ReverseString from './ReverseString';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+  <BrowserRouter >
+  <App />
+  </BrowserRouter>
     {/* <ReverseString /> */}
   </React.StrictMode>,
   document.getElementById('root')

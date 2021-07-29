@@ -6,7 +6,6 @@ function Employee() {
   const [isLoginIn, setIsLoginIn] = useState();
 
   if(isLoginIn){
-    console.log("welcome")
     return <WelcomEmployee />
   }else{
     <GuestEmployee />

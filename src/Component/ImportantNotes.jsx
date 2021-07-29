@@ -545,4 +545,11 @@ export default function Profile({userId, companyId}) {
   )
 }
 
-
+background: '#e0eafc',  
+    background: '-webkit-linear-gradient(to right, #e0eafc, #cfdef3)',  
+    background: 'linear-gradient(to right, #e0eafc, #cfdef3)', 
+    transition: "0.3s",
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+    "&:hover": {
+      boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.3)"
+    }
