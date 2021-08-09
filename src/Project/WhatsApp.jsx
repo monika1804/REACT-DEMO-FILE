@@ -59,29 +59,6 @@ export default function WhatsApp(props) {
          <BroadcastGroup />
         </Grid>
         <br />
-        <Grid xs={12} >
-          <Grid xs={6}>
-            <Typography variant="h5">Add here the message you want to Broadcast.</Typography>
-            <div className={classes.textfeildContent}>
-              <TextareaAutosize
-                resize="none"
-                rowsMax={5}
-                rowsMin={5}
-                placeholder="Enter Message"
-                name="message"
-                inputProps={{ style: { fontSize: 14 } }}
-                style={{ width: "100%", resize: "none", fontSize: 14 }}
-              />
-              <div style={{display:'flex', justifyContent:'flex-end',}}>
-                <Attachment />
-                <Button variant="contained" size="large" color="primary" >Broadcast</Button>
-              </div>
-            </div>    
-          </Grid>
-        <Grid xs={6}>
-
-        </Grid>
-        </Grid>
     </div>
   )
 }

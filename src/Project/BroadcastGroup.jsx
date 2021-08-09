@@ -11,7 +11,7 @@ import CreateGroup from './CreateGroup';
 import Chat from './Chat';
 import Collapse from '@material-ui/core/Collapse';
 import GroupChat from './GroupChat';
-import UndoIcon from '@material-ui/icons/Undo';
+import ReplyIcon from '@material-ui/icons/Reply';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +35,8 @@ const useStyles = makeStyles((theme) => ({
   firstIcon:{
     color:'white',
     marginLeft:10,
+    height:30,
+    width:30,
   },
   backIcon:{
     display:'flex',
@@ -76,7 +78,7 @@ export default function BroadcastGroup() {
       <Paper square position="static" style={{backgroundColor:'#344aad'}}>
         <Grid xs={12} className={classes.topContent}>
           <Grid xs={3} className={classes.backIcon}>
-            <UndoIcon fontSize="large" className={classes.firstIcon} onClick={closeHandleClick} />
+            <ReplyIcon fontSize="large" className={classes.firstIcon} onClick={closeHandleClick} />
           </Grid>
           <Grid xs={7} className={classes.top}>
            <Tab label="Broadcast Group" style={{color:'#ffffff', fontSize:'15px', fontWeight:'bold',}} />  
@@ -96,7 +98,7 @@ export default function BroadcastGroup() {
       <Grid style={{overflow: 'auto', }}>
         <List className={classes.ListContent}>
         { groupItem ?
-        <>
+          <div>
           <div className={classes.GroupLine} onClick={chatBoxClick}>
            <div>
               <ListItem button>  
@@ -110,7 +112,7 @@ export default function BroadcastGroup() {
            <EditSharpIcon fontSize="large" /> 
           </div>
           <Divider />
-          </>
+         </div>
           :       "" 
           }
           <Collapse in={chatOpen} timeout="auto" unmountOnExit>
