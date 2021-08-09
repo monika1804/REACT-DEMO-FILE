@@ -17,24 +17,14 @@ const useStyles = makeStyles({
 export default function FormDialog({
   open,
   setOpen,
-  removeContent,
-  setRemoveContent,
- setFaq,
- faq
+  removeFaq,
+  id
 }) {
-
-
   const handleClose = () => {
     setOpen(false);
   };
 const handleDeleteClick =(index) =>{
-    // const itemList =[...removeContent]
-    // itemList.splice(index, 1)
-    // setRemoveContent(itemList);
-    console.log("check", index)
-    const list = [...faq];
-    list.splice(index, 1);
-    setFaq(list);
+    removeFaq(id)
     setOpen(false);
 };
   return (
