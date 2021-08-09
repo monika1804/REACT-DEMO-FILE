@@ -27,10 +27,12 @@ export default function FormDialog({
   const handleClose = () => {
     setOpen(false);
   };
-const handleDeleteClick =(index) =>{
+  
+const handleDeleteClick =(index, event) =>{
     // const itemList =[...removeContent]
     // itemList.splice(index, 1)
     // setRemoveContent(itemList);
+   
     console.log("check", index)
     const list = [...faq];
     list.splice(index, 1);

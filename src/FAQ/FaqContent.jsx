@@ -42,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight:'10px',
      backgroundColor:"white",
       height:'40px', 
-      width:'30px',
+      width:'25px',
+      
   },
 }));
 
@@ -88,8 +89,8 @@ export default function SimpleAccordion({
               >
               <DeleteIcon variant="outlined" 
               fontSize="medium" 
+              color="primary"
               className={classes.deleteIcon}
-              style={{}}
               // onClick={handleRemoveItem}
               onClick={() => setOpen(true)}
               />

@@ -7,14 +7,18 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 
 const useStyles = makeStyles({
   root: {
-    textAlign:'center',
+    // textAlign:'center',
     display:'flex',
     justifyContent:'center',
-    marginTop:'100px',
+    flexDirection:'column',
+    // marginTop:'100px',
+    // width:800,
   },
   conatiner:{
     transition: "0.3s",
     padding:15,
+    width:'800px',
+  
   },
   paper:{
     padding:50,
@@ -27,9 +31,11 @@ const useStyles = makeStyles({
   Content:{
     marginTop:20,
     display:'flex', 
+    flexDirection:'column',
+    gridGap:'10px',
   },
   section:{
-    width:'800px'
+    // width:'800px'
   },
   topContent:{
     display:'flex',
@@ -40,6 +46,25 @@ const useStyles = makeStyles({
     width:'30px',
     marginLeft:'10px',
     cursor:'pointer',
+  },
+  TopHeading:{
+    padding:'10px',
+   
+   
+  },
+  Heading:{
+    padding:'15px',
+    paddingLeft:'10px',
+    textAlign:'left',
+    width:'750px',
+    color:'white',
+    backgroundColor:'#5b6aba',
+    borderRadius:' 10px 100px / 120px',
+    transition: "0.3s",
+    boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+    "&:hover": {
+      boxShadow: "0 20px 70px -12.125px rgba(0,0,0,0.3)"
+    }
   }
 });
 
@@ -58,11 +83,17 @@ export default function FAQ() {
     }])
   });
   return (
-    <div className={classes.root}>
-      <Grid  className={classes.conatiner}> 
-        <Paper className={classes.paper}>
-          <Grid className={classes.Heading}>
-            <Typography variant="h3">Frequently Ask Question</Typography><br />
+    <Grid item xs={12} className={classes.root}>
+    <Grid xs={6} className={classes.TopHeading}>
+          <Paper className={classes.Heading}>
+            <Typography variant="h2" 
+            style={{fontWeight:'400', fontFamily:'"Gill Sans", sans-serif'}}
+            >Frequently Ask Question</Typography>
+            <Typography variant="h5">Everything you want to know about The Chatbot</Typography>
+            </Paper>
+            </Grid>
+          <Grid xs={6} className={classes.conatiner}> 
+            <Paper className={classes.paper}>
               <div className={classes.topContent}>
                 <SearchBar
                   value={search}
@@ -73,8 +104,9 @@ export default function FAQ() {
                 />
                 <AddBoxIcon fontSize="large" color="primary" className={classes.addIcon} onClick ={addColumnClick}/>
               </div>
-          </Grid>
+    
           <Grid xs={12} className={classes.Content}>
+          <Typography variant="h5" style={{textAlign:'left',}}>To see an Answer, simply select the Question below.</Typography>
             <Grid xs={12} className={classes.section}>
               <FaqContent 
               columnAdd = {columnAdd}
@@ -86,6 +118,6 @@ export default function FAQ() {
           </Grid>
         </Paper> 
       </Grid>   
-    </div>
+    </Grid>
   )
 }
