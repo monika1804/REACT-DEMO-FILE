@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import SearchBar from "material-ui-search-bar";
 import FaqContent from './FaqContent';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import { data } from "./data";
+
 
 const useStyles = makeStyles({
   root: {
@@ -71,17 +73,23 @@ const useStyles = makeStyles({
 export default function FAQ() {
   const classes = useStyles();
   const [search, setSearch] = useState();
-  const [columnAdd, setColumnAdd] = useState(false);
-  const [faq, setFaq] = useState([]);
+  const [faq, setFaq] = useState(data);
 
   const  handlesearchBar = (() =>{
   })
-  const addColumnClick = (() =>{
-    setColumnAdd(true);
-    setFaq(prevItems => [...prevItems, {
-      id:prevItems.length,
-    }])
+  const addFaq  = (() =>{
+    let faqs = [...faq]
+    faqs.push({
+      question: "What is the question?",
+      answer: "Set Answer",
+    })
+    setFaq(faqs)
   });
+
+  const removeFaqFn = ((newFaq) => {
+    setFaq(newFaq)
+  })
+  
   return (
     <Grid item xs={12} className={classes.root}>
     <Grid xs={6} className={classes.TopHeading}>
@@ -102,17 +110,16 @@ export default function FAQ() {
                   placeholder="Search for question"
                   style={{width:'800px',}}
                 />
-                <AddBoxIcon fontSize="large" color="primary" className={classes.addIcon} onClick ={addColumnClick}/>
+                <AddBoxIcon fontSize="large" color="primary" className={classes.addIcon} onClick ={addFaq}/>
               </div>
     
           <Grid xs={12} className={classes.Content}>
           <Typography variant="h5" style={{textAlign:'left',}}>To see an Answer, simply select the Question below.</Typography>
             <Grid xs={12} className={classes.section}>
               <FaqContent 
-              columnAdd = {columnAdd}
-              setColumnAdd = {setColumnAdd}
               faq = {faq}
               setFaq = {setFaq}
+              removeFaqFn = {removeFaqFn}
                 />
             </Grid>
           </Grid>

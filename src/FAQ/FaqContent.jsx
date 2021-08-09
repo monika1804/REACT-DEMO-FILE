@@ -8,7 +8,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid'
 import EdiText from 'react-editext'
-import { data } from "./data";
 import 'react-edit-text/dist/index.css';
 import { Divider } from '@material-ui/core';
 import DialogBox from './DialogBox';
@@ -48,37 +47,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SimpleAccordion({
-  columnAdd,
   faq,
   setFaq,
+  removeFaqFn
 }) {
   const classes = useStyles();
   const [removeContent, setRemoveContent] = useState(true);
   const [open, setOpen] = useState(false)
+  const [idx, setIdx] = useState(0)
   const handleSave = val => {
     console.log('Edited Value -> ', val)
   }
   const handleInputChange = (e, index) => {
     
   };
-  const handleRemoveClick =((index) =>{
-    const list = [...faq];
-    list.splice(index, 1);
-    setFaq(list);
-  })
-  // const handleRemoveItem =((index) =>{
-  //   setOpen(true);
-  //   const itemList =[...removeContent]
-  //   itemList.splice(index, 1)
-  //   setRemoveContent(itemList);
-  // })
+  const removeFaq = (id)=>{
+    let newFaq = faq.filter((elem, idx) => {
+      return id != idx
+    })
+    removeFaqFn(newFaq)
+  }
   
   return (
     <div className={classes.root}>
       <Card>
       { removeContent ? 
       <div>
-        { data.map(item =>
+        { faq.map((item, id) =>
           <div>
             <Accordion key={item.id} className={classes.accordionContent}>
               <AccordionSummary
@@ -92,19 +87,12 @@ export default function SimpleAccordion({
               color="primary"
               className={classes.deleteIcon}
               // onClick={handleRemoveItem}
-              onClick={() => setOpen(true)}
+              onClick={(e) => {
+                setOpen(true)
+                setIdx(id)
+              }}
               />
-                { open ? 
-              <DialogBox
-                setOpen={setOpen}
-                open={open}
-                removeContent={removeContent}
-                setRemoveContent={setRemoveContent}
-                setFaq={setFaq}
-                faq={faq}
-              />
-              : ""
-                }
+
                 <Grid className={classes.heading}>
                   <EdiText
                   tabIndex={2}
@@ -131,70 +119,19 @@ export default function SimpleAccordion({
             </Accordion>
             <Divider />
             </div>
-        )}  
+        )}
+        { open ? 
+              <DialogBox
+                id = {idx}
+                setOpen={setOpen}
+                open={open}
+                removeFaq = {removeFaq}
+              />
+              : ""
+                }  
         </div> 
         : " "
       }
-          { columnAdd ? 
-            <div>
-              {faq.map((x, i) => (
-                <div>
-                  <Accordion>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                      className={classes.headtop}
-                    >
-                    <DeleteIcon variant="outlined" 
-                      fontSize="medium" 
-                      className={classes.deleteIcon}
-                      style={{}}
-                      // onClick={handleRemoveItem}
-                      onClick={() => setOpen(true)}
-                      />
-                        {/* <Button variant="outlined" 
-                          fontSize="small" 
-                          style={{marginRight:'10px', backgroundColor:"white",}}
-                          onClick={handleRemoveClick}
-                          >Remove</Button> */}
-                          { open ? 
-                            <DialogBox
-                              removeContent={removeContent}
-                              setRemoveContent={setRemoveContent}
-                              setFaq={setFaq}ws
-                              faq={faq}
-                            />
-                            : ""
-                              }
-                                    <Typography className={classes.heading}>
-                                  <EdiText
-                                    submitOnEnter
-                                    cancelOnEscape
-                                    buttonsAlign='before'
-                                    value="Add Question here.."
-                                    onSave={handleSave}
-                        />
-                      </Typography>
-                     
-                    </AccordionSummary>
-                    <AccordionDetails className={classes.editText}>
-                      <EdiText
-                        submitOnEnter
-                        cancelOnEscape
-                        buttonsAlign='before'
-                        value="Add Answer"
-                        onSave={handleSave}
-                        type="textarea"
-                      />
-                    </AccordionDetails>
-                  </Accordion> 
-                  <Divider />
-                </div>
-              ))}
-            </div>
-          : " "
-          }
       </Card>
     </div>
   );
