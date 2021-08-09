@@ -24,12 +24,16 @@ import RenderIndex from './Component/ConditionalRendering/RenderIndex';
 import UseEffectAPI from './Component/FetchAPI/UseEffectAPI';
 import Broadcasting from './Project/Broadcasting';
 import ContactList from './Project/ContactList';
+import FAQ from './FAQ/FAQ';
+import IndexDemo from './Component/Graphql/IndexDemo';
 
 export class App extends Component {
   render() {
     return (
       <div className="App">
-      <Broadcasting />
+      <FAQ />
+      {/* <IndexDemo /> */}
+      {/* <Broadcasting /> */}
       {/* <ContactList /> */}
       {/* <UseEffectAPI /> */}
       {/* <RenderIndex /> */}
