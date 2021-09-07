@@ -1,0 +1,397 @@
+ .catch((err) => openSnackbar(err.message));  
+
+ import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+//import "../css/ChatInput.css";
+import Grid from "@material-ui/core/Grid";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import TextField from "@material-ui/core/TextField";
+import IconButton from "@material-ui/core/IconButton";
+import SendIcon from "@material-ui/icons/Send";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { useFileAttachment } from "./AttachFiles";
+import { config } from "../../common";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    padding: "10px 0px 5px 0px",
+    margin: "0px -15px 0px 0px",
+    wrap: "nowrap",
+  },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
+  large: {
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+  },
+  message: {
+    textAlign: "left",
+  },
+  rightIcon: {
+    display: 'flex',
+    flexDirection: 'column',
+  }
+}));
+
+
+const ChatInput = ({
+  showSmallInput,
+  companyId,
+  sessionId,
+  userId,
+  sendMessage,
+  participants,
+  isChatInputDisabled,
+  isDisabled,
+  disableChatBox,
+
+}) => {
+  const [message, setMessage] = useState("");
+  const classes = useStyles();
+  const [showSnackbar, setSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState();
+  const [snackbarSeverity, setSnackbarSeverity] = useState();
+  const [participantIds, setParticipantIds] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [view, setView] = useState(true);
+  const [fileSelect, setFileSelect] = useState([]);
+  const isInputDisabled = () => isDisabled || isChatInputDisabled;
+
+  const [
+    totalSelectedAttachmets,
+    triggerFileUpload,
+    attachmentSelector,
+    attachmentPreview,
+  ] = useFileAttachment(companyId, classes.blue, isInputDisabled, () => {
+    setSnackbarMessage(`Something went wrong`);
+    setSnackbarSeverity("error");
+    setSnackbar(true);
+  });
+
+  const onKeyDown = (e) => {
+    if (e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      if (message != "") {
+        onSendMessage(e);
+      }
+    }
+  };
+
+  const onTextChanged = (e) => {
+    setMessage(e.target.value);
+
+
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+    setView(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const onSendMessage = async (event) => {
+    if (message !== "") {
+      sendMessage(sessionId, userId, message, "");
+      setMessage("");
+    }
+    if (totalSelectedAttachmets > 0) {
+      const files = await triggerFileUpload(event);
+      if (files !== undefined) {
+        for (let i = 0; i < files.data.length; i++) {
+          const fileLocation = `${config.apiServerBase}/resource/${files.data[i].resourceId}/${files.data[i].fileName}`
+          console.log("file upload Sending data", sessionId, userId, fileLocation, files.data[i].type)
+          sendMessage(sessionId, userId, fileLocation, files.data[i].type)
+        }
+      }
+      else {
+        console.log("file upload Files undefined")
+      }
+    }
+  };
+
+  useEffect(() => {
+    const participantIds = [];
+    participants &&
+      participants.forEach(({ participantType, participant }) => {
+        if (participantType !== "bot") {
+          participantIds.push(participant);
+        }
+      });
+    setParticipantIds(participantIds);
+  }, [participants]);
+
+  return (
+    <Grid
+      container
+      item
+      xs={12}
+      spacing={1}
+      justifyContent="space-between"
+      alignItems="center"
+      className={classes.root}
+    >
+      <Grid>
+        {attachmentSelector}
+        <div>
+          <AddPhotoAlternateIcon
+            onClick={handleClickOpen}
+            fontSize="large"
+            onClose={handleClose}
+          />
+          {view ?
+            <GalleryModal
+              open={open}
+            />
+            : ""}
+
+        </div>
+      </Grid>
+      <Grid item xs>
+        <TextField
+          variant="outlined"
+          multiline={showSmallInput ? true : true}
+          onKeyDown={onKeyDown}
+          resize="none"
+          maxRows={5}
+          minRows={1}
+          placeholder="Enter Message"
+          name="message"
+          className={classes.inputField}
+          disabled={isInputDisabled() || disableChatBox}
+          onChange={onTextChanged}
+          value={isInputDisabled() ? "Chat Ended" : message}
+          inputProps={{ style: { fontSize: 14 } }}
+          style={isInputDisabled() ? { width: "100%", resize: "none", fontSize: 15, color: "red", textAlign: "center" } : { width: "100%", resize: "none", fontSize: 15 }}
+        />
+      </Grid>
+      <Grid>
+        <IconButton
+          className={classes.blue}
+          onClick={onSendMessage}
+          disabled={isInputDisabled()}
+        >
+          <SendIcon fontSize={"large"} />
+        </IconButton>
+      </Grid>
+      <Grid item xs={12} align="left" style={{ marginLeft: "40px" }}>
+        {attachmentPreview}
+      </Grid>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={1000}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+
+        <MuiAlert
+          style
+          elevation={6}
+          variant="filled"
+          onClose={() => setSnackbar(false)}
+          severity={snackbarSeverity}
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
+    </Grid>
+  );
+};
+
+
+export default ChatInput;
+
+
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+//import "../css/ChatInput.css";
+import Grid from "@material-ui/core/Grid";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import TextField from "@material-ui/core/TextField";
+import IconButton from "@material-ui/core/IconButton";
+import SendIcon from "@material-ui/icons/Send";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { useFileAttachment } from "./AttachFiles";
+import { config } from "../../common";
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
+import ImageTab from './FilesAndGallery/ImageTab';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    padding: "10px 0px 5px 0px",
+    margin: "0px -15px 0px 0px",
+    wrap: "nowrap",
+  },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
+  large: {
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+  },
+  message: {
+    textAlign: "left",
+  },
+  bottom: {
+    display: 'flex',
+    alignItems: 'center',
+  }
+}));
+
+
+const ChatInput = ({
+  showSmallInput,
+  companyId,
+  sessionId,
+  userId,
+  sendMessage,
+  participants,
+  isChatInputDisabled,
+  isDisabled,
+}) => {
+  const [message, setMessage] = useState("");
+  const classes = useStyles();
+  const [showSnackbar, setSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState();
+  const [snackbarSeverity, setSnackbarSeverity] = useState();
+  const [participantIds, setParticipantIds] = useState([]);
+  const [imageOpen, setImageOpen] = useState(false);
+  const isInputDisabled = () => isDisabled || isChatInputDisabled;
+
+  const handleImageClick = (() => {
+    setImageOpen(true);
+  })
+  const [
+    totalSelectedAttachmets,
+    triggerFileUpload,
+    attachmentSelector,
+    attachmentPreview,
+  ] = useFileAttachment(companyId, classes.blue, isInputDisabled, () => {
+    setSnackbarMessage(`Something went wrong`);
+    setSnackbarSeverity("error");
+    setSnackbar(true);
+  });
+
+  const onKeyDown = (e) => {
+    if (e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      if (message != "") {
+        onSendMessage(e);
+      }
+    }
+  };
+
+  const onTextChanged = (e) => {
+    setMessage(e.target.value);
+  };
+
+  const onSendMessage = async (event) => {
+    if (message !== "") {
+      sendMessage(sessionId, userId, message, "");
+      setMessage("");
+    }
+    if (totalSelectedAttachmets > 0) {
+      const files = await triggerFileUpload(event);
+      if (files !== undefined) {
+        for (let i = 0; i < files.data.length; i++) {
+          const fileLocation = `${config.apiServerBase}/resource/${files.data[i].resourceId}/${files.data[i].fileName}`
+          console.log("file upload Sending data", sessionId, userId, fileLocation, files.data[i].type)
+          sendMessage(sessionId, userId, fileLocation, files.data[i].type)
+        }
+      }
+      else {
+        console.log("file upload Files undefined")
+      }
+    }
+  };
+
+  useEffect(() => {
+    const participantIds = [];
+    participants &&
+      participants.forEach(({ participantType, participant }) => {
+        if (participantType !== "bot") {
+          participantIds.push(participant);
+        }
+      });
+    setParticipantIds(participantIds);
+  }, [participants]);
+
+  return (
+    <Grid
+      container
+      item
+      xs={12}
+      spacing={1}
+      justifyContent="space-between"
+      alignItems="center"
+      className={classes.root}
+    >
+      <Grid className={classes.bottom}>
+        {attachmentSelector}
+        <AddPhotoAlternateIcon fontSize="large" onClick={handleImageClick} />
+      </Grid>
+      {
+        imageOpen ?
+          <ImageTab
+            imageOpen={imageOpen}
+            setImageOpen={setImageOpen}
+          />
+          : " "
+      }
+      <Grid item xs>
+        <TextField
+          variant="outlined"
+          multiline={showSmallInput ? true : true}
+          onKeyDown={onKeyDown}
+          resize="none"
+          maxRows={5}
+          minRows={1}
+          placeholder="Enter Message"
+          name="message"
+          className={classes.inputField}
+          disabled={isInputDisabled()}
+          onChange={onTextChanged}
+          value={isInputDisabled() ? "Chat Ended" : message}
+          inputProps={{ style: { fontSize: 14 } }}
+          style={isInputDisabled() ? { width: "100%", resize: "none", fontSize: 15, color: "red", textAlign: "center" } : { width: "100%", resize: "none", fontSize: 15 }}
+        />
+      </Grid>
+      <Grid>
+        <IconButton
+          className={classes.blue}
+          onClick={onSendMessage}
+          disabled={isInputDisabled()}
+        >
+          <SendIcon fontSize={"large"} />
+        </IconButton>
+      </Grid>
+      <Grid item xs={12} align="left" style={{ marginLeft: "40px" }}>
+        {attachmentPreview}
+      </Grid>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={1000}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <MuiAlert
+          style
+          elevation={6}
+          variant="filled"
+          onClose={() => setSnackbar(false)}
+          severity={snackbarSeverity}
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
+    </Grid>
+  );
+};
+
+
+export default ChatInput;
