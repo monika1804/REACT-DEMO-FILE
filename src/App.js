@@ -26,36 +26,54 @@ import Broadcasting from './Project/Broadcasting';
 import ContactList from './Project/ContactList';
 import FAQ from './FAQ/FAQ';
 import IndexDemo from './Component/Graphql/IndexDemo';
+import FileUplaod from './importantNotes/FileUpalod';
+import LineGraph from './Component/LineChat/LineGraph';
+import BarGraph from './Component/LineChat/BarGraph';
+import SmsToPort from './Component/SMS/SmsToPort';
+import FaqLogin from './FAQ/FaqLogin';
+import AverageSummary from './Component/LineChat/AverageSummary';
+import ActivateChatbot from './FAQ/ActivateChatbot';
+import Login from './Component/LoginScreen/Login';
+import PopupMessage from './Component/PopupMessage';
 
 export class App extends Component {
   render() {
     return (
       <div className="App">
-      <FAQ />
-      {/* <IndexDemo /> */}
-      {/* <Broadcasting /> */}
-      {/* <ContactList /> */}
-      {/* <UseEffectAPI /> */}
-      {/* <RenderIndex /> */}
-      {/* <DataFetchFunction /> */}
-      {/* <DataFetchClass /> */}
-      {/* <CustomIndex /> */}
-      {/* <UseEffect /> */}
-    {/* <UseState /> */}
-      {/* <FRParentInput /> */}
-    {/* <FocusInput /> */}
-      {/* <RefsDemo /> */}
-      {/* <ParentComp /> */}
-      {/* <Table /> */}
-      {/* <FragmentDemo /> */}
-      {/* <LifeCycleA /> */}
+        {/* <FaqLogin /> */}
+        {/* <ActivateChatbot /> */}
+        {/* <Login /> */}
+        {/* <PopupMessage /> */}
+        {/* <SmsToPort /> */}
+        {/* <FAQ /> */}
+        {/* <IndexDemo /> */}
+        {/* <Broadcasting /> */}
+        {/* <ContactList /> */}
+        {/* <UseEffectAPI /> */}
+        {/* <RenderIndex /> */}
+        {/* <DataFetchFunction /> */}
+        {/* <DataFetchClass /> */}
+        {/* <CustomIndex /> */}
+        {/* <UseEffect /> */}
+        {/* <UseState /> */}
+        {/* <FRParentInput /> */}
+        {/* <FocusInput /> */}
+        {/* <RefsDemo /> */}
+        {/* <ParentComp /> */}
+        {/* <Table /> */}
+        {/* <FragmentDemo /> */}
+        {/* <LifeCycleA /> */}
         {/* <Form /> */}
         {/* <h1 className="error">Error</h1> */}
         {/* <h1 className={styles.success}>Success</h1> */}
         {/* <ListRendering /> */}
-          {/* <UserGreeting />  */}
-           {/* <StyleSheet primary={true} /> */}
-          {/* <Inline /> */}
+        {/* <UserGreeting />  */}
+        {/* <StyleSheet primary={true} /> */}
+        {/* <Inline /> */}
+        {/* <FileUplaod /> */}
+        <LineGraph />
+        <BarGraph />
+        {/* <AverageSummary /> */}
       </div>
     )
   }
