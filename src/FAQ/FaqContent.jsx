@@ -40,9 +40,9 @@ const useStyles = makeStyles((theme) => ({
   deleteIcon:{
     marginRight:'10px',
      backgroundColor:"white",
+     color:'#3f51b5',
       height:'40px', 
-      width:'25px',
-      
+      width:'25px',   
   },
 }));
 
@@ -58,80 +58,75 @@ export default function SimpleAccordion({
   const handleSave = val => {
     console.log('Edited Value -> ', val)
   }
-  const handleInputChange = (e, index) => {
-    
+  const handleInputChange = (e, index) => {  
   };
   const removeFaq = (id)=>{
     let newFaq = faq.filter((elem, idx) => {
       return id != idx
     })
     removeFaqFn(newFaq)
-  }
-  
+  } 
   return (
     <div className={classes.root}>
       <Card>
       { removeContent ? 
-      <div>
-        { faq.map((item, id) =>
-          <div>
-            <Accordion key={item.id} className={classes.accordionContent}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon fontSize="large" />} 
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                className={classes.headtop}
-              >
-              <DeleteIcon variant="outlined" 
-              fontSize="medium" 
-              color="primary"
-              className={classes.deleteIcon}
-              // onClick={handleRemoveItem}
-              onClick={(e) => {
-                setOpen(true)
-                setIdx(id)
-              }}
-              />
-
-                <Grid className={classes.heading}>
+        <div>
+          { faq.map((item, id) =>
+            <div>
+              <Accordion key={item.id} className={classes.accordionContent}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon fontSize="large" />} 
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                  className={classes.headtop}
+                >
+                <DeleteIcon variant="outlined" 
+                fontSize="medium" 
+                className={classes.deleteIcon}
+                onClick={(e) => {
+                  setOpen(true)
+                  setIdx(id)
+                }}
+                />
+                  <Grid className={classes.heading}>
+                    <EdiText
+                      tabIndex={2}
+                      submitOnUnfocus
+                      buttonsAlign='before'
+                      startEditingOnFocus
+                      value={item.question}
+                      onSave={handleSave}
+                    /> 
+                  </Grid>
+                </AccordionSummary>
+                <Divider />
+                <AccordionDetails className={classes.editText}>
                   <EdiText
-                  tabIndex={2}
-                  submitOnUnfocus
-                  buttonsAlign='before'
-                  startEditingOnFocus
-                  value={item.question}
-                  onSave={handleSave}
+                    tabIndex={5}
+                    submitOnUnfocus
+                    startEditingOnFocus
+                    type='textarea'
+                    buttonsAlign='before'
+                    value={item.answer}
+                    onSave={handleSave}
                   /> 
-                </Grid>
-              </AccordionSummary>
+                </AccordionDetails>
+              </Accordion>
               <Divider />
-              <AccordionDetails className={classes.editText}>
-                <EdiText
-                  tabIndex={5}
-                  submitOnUnfocus
-                  startEditingOnFocus
-                  type='textarea'
-                  buttonsAlign='before'
-                  value={item.answer}
-                  onSave={handleSave}
-                /> 
-              </AccordionDetails>
-            </Accordion>
-            <Divider />
-            </div>
-        )}
-        { open ? 
-              <DialogBox
-                id = {idx}
-                setOpen={setOpen}
-                open={open}
-                removeFaq = {removeFaq}
-              />
-              : ""
-                }  
-        </div> 
-        : " "
-      }
+              </div>
+          )}
+          { open ? 
+            <DialogBox
+              id = {idx}
+              setOpen={setOpen}
+              open={open}
+              removeFaq = {removeFaq}
+            />
+            : ""
+          }  
+      </div> 
+            : " "
+          }
       </Card>
     </div>
   );
